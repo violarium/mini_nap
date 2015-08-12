@@ -8,6 +8,7 @@ import argparse
 class BreakWindow(Gtk.Window):
     def __init__(self, period_timer):
         Gtk.Window.__init__(self, title="It's time for break")
+        self.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
 
         self.period_timer = period_timer
         self.rest = self.period_timer.break_time
