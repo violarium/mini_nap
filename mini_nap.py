@@ -7,8 +7,10 @@ import argparse
 
 class BreakWindow(Gtk.Window):
     def __init__(self, period_timer):
-        Gtk.Window.__init__(self, title="It's time for break")
+        Gtk.Window.__init__(self, title="Take a break")
+
         self.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
+        self.set_resizable(False)
 
         self.period_timer = period_timer
         self.rest = self.period_timer.break_time
@@ -16,8 +18,8 @@ class BreakWindow(Gtk.Window):
 
         # window and box markup
         self.set_border_width(10)
-        self.set_default_size(300, 100)
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        self.box.set_size_request(200, 60)
         self.add(self.box)
 
         # label with rest time
