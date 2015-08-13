@@ -3,6 +3,7 @@
 from gi.repository import Gtk
 from gi.repository import GObject
 import argparse
+import time
 
 
 class BreakWindow(Gtk.Window):
@@ -79,11 +80,13 @@ class PeriodTimer:
 
     def remove_timeout(self):
         GObject.source_remove(self.timeout_id)
+        self.timeout_id = None
 
     def show_break_window(self, data):
-        self.remove_timeout()
-        break_window = BreakWindow(self)
-        break_window.show_all()
+        if self.timeout_id is not None:
+            self.remove_timeout()
+            break_window = BreakWindow(self)
+            break_window.show_all()
 
     def on_timeout(self, data):
         self.show_break_window(data)
