@@ -91,6 +91,23 @@ class PeriodTimer:
         self.show_break_window(data)
 
 
+class PopupMenu:
+    def __init__(self, pt):
+        self.menu = Gtk.Menu()
+
+        menu_item_break = Gtk.MenuItem(label="Take a break")
+        menu_item_break.connect("activate", pt.show_break_window)
+        self.menu.append(menu_item_break)
+
+        menu_item_quit = Gtk.MenuItem(label="Quit")
+        menu_item_quit.connect("activate", lambda q: Gtk.main_quit())
+        self.menu.append(menu_item_quit)
+
+    def show(self, icon, button, time):
+        self.menu.show_all()
+        self.menu.popup(None, None, None, None, button, time)
+
+
 # Argument parser
 parser = argparse.ArgumentParser(description='Small program to take breaks.')
 parser.add_argument('--period-time', type=int, required=True, help='period time between breaks in seconds')
@@ -101,28 +118,13 @@ args = parser.parse_args()
 # Period timer
 period_timer = PeriodTimer(args.period_time, args.break_time)
 
-
 # Menu
-
-menu = Gtk.Menu()
-menu_item_break = Gtk.MenuItem(label="Take a break")
-menu_item_break.connect("activate", period_timer.show_break_window)
-menu.append(menu_item_break)
-menu_item_quit = Gtk.MenuItem(label="Quit")
-menu_item_quit.connect("activate", lambda q: Gtk.main_quit())
-menu.append(menu_item_quit)
-
-
-# Status icon
-
-def popup_menu(icon, button, time):
-    menu.show_all()
-    menu.popup(None, None, None, None, button, time)
+popup_menu = PopupMenu(period_timer)
 
 
 status_icon = Gtk.StatusIcon()
 status_icon.set_from_stock(Gtk.STOCK_EXECUTE)
 status_icon.set_title("StatusIcon")
-status_icon.connect("popup-menu", popup_menu)
+status_icon.connect("popup-menu", popup_menu.show)
 
 Gtk.main()
