@@ -3,7 +3,6 @@
 from gi.repository import Gtk
 from gi.repository import GObject
 import argparse
-import time
 
 
 class BreakWindow(Gtk.Window):
