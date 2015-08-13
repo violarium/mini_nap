@@ -9,15 +9,19 @@ class BreakWindow(Gtk.Window):
     def __init__(self, period_timer):
         Gtk.Window.__init__(self, title="Take a break")
 
-        self.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
-        self.set_resizable(False)
-
         self.period_timer = period_timer
         self.rest = self.period_timer.break_time
         self.timeout_id = None
 
-        # window and box markup
+        # window markup
+        self.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
+        self.set_resizable(False)
+        self.set_decorated(False)
+        self.set_modal(True)
+        self.set_keep_above(True)
         self.set_border_width(10)
+
+        # box markup
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         self.box.set_size_request(200, 60)
         self.add(self.box)
@@ -113,10 +117,10 @@ def popup_menu(icon, button, time):
     menu.show_all()
     menu.popup(None, None, None, None, button, time)
 
+
 status_icon = Gtk.StatusIcon()
 status_icon.set_from_stock(Gtk.STOCK_EXECUTE)
 status_icon.set_title("StatusIcon")
 status_icon.connect("popup-menu", popup_menu)
-
 
 Gtk.main()
